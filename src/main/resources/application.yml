@@ -7,22 +7,37 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/order
     username: root
     password: root
-    # 使用druid数据源
-    type: com.alibaba.druid.pool.DruidDataSource
+
+    #连接池使用的数据库驱动类
+    type: org.apache.commons.dbcp.BasicDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    filters: stat
-    maxActive: 3
-    initialSize: 1
-    maxWait: 30000
-    minIdle: 1
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 300000
-    validationQuery: select 'x'
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    poolPreparedStatements: true
-    maxOpenPreparedStatements: 20
+    #初始化链接数
+    initial-size: 1
+    #最大链接数
+    max-active: 2
+    #最小空闲数量
+    min-idle: 1
+    #最大空闲数量
+    max-idle: 2
+    #最大等待时间 - 60秒
+    max-wait: 6
+
+    # 使用druid数据源
+#    type: com.alibaba.druid.pool.DruidDataSource
+#    driver-class-name: com.mysql.jdbc.Driver
+#    filters: stat
+#    maxActive: 1
+#    initialSize: 0
+#    maxWait: 30
+#    minIdle: 1
+#    timeBetweenEvictionRunsMillis: 60
+#    minEvictableIdleTimeMillis: 30
+#    validationQuery: select 'x'
+#    testWhileIdle: true
+#    testOnBorrow: false
+#    testOnReturn: false
+#    poolPreparedStatements: true
+#    maxOpenPreparedStatements: 2
 
 mybatis:
   mapper-locations: classpath:mapping/*.xml
