@@ -69,6 +69,17 @@
 			<artifactId>commons-pool</artifactId>
 			<version>1.4</version>
 		</dependency>
+
+		<!--<dependency>
+			<groupId>io.github.rhwayfun</groupId>
+			<artifactId>spring-boot-rocketmq-starter</artifactId>
+			<version>0.0.3.RELEASE</version>
+		</dependency>-->
+		<dependency>
+			<groupId>org.apache.rocketmq</groupId>
+			<artifactId>rocketmq-client</artifactId>
+			<version>4.3.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
