@@ -28,6 +28,17 @@ public class RocketmqApplicationTests {
  */
 	private CountDownLatch latch = new CountDownLatch(count);
 
+	/**
+	 * mysql> show variables like "max_connections";
+	 +-----------------+-------+
+	 | Variable_name   | Value |
+	 +-----------------+-------+
+	 | max_connections | 10    |
+	 +-----------------+-------+
+	 1 row in set
+
+	 mysql>  set GLOBAL max_connections=100;
+	 */
 	@Test
 	public void contextLoads() {
 
