@@ -14,8 +14,8 @@ public class OrderService {
     @Autowired
     public OrderMapper orderMapper;
 
-    public void inset(Order order){
-        orderMapper.insertSelective(order);
+    public int  inset(Order order){
+       return  orderMapper.insertSelective(order);
     }
 
 }
