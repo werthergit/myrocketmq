@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -19,7 +20,9 @@ public class RocketmqApplicationTests {
 	@Autowired
 	public OrderService orderService;
 
-	private int count = 100;
+	private final int count = 200;
+
+	private RestTemplate restTemplate = new RestTemplate();
 	/*
  * 线程计数器
  * 	将线程数量初始化
@@ -79,6 +82,49 @@ public class RocketmqApplicationTests {
 		}
 	}
 
+	@Test
+	public void contextLoads2() {
+
+		for(int price=0;price<count;price++) {
+			int finalPrice = price;
+			new Thread(() -> {
+				try {
+					latch.await(); // 主线程等待
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
+				add(finalPrice);
+				//Assert.assertEquals(add(finalPrice), 1);
+				//System.out.println("----------over----");
+			}).start();
+			System.out.println("In Java8, Lambda expression rocks !!"+finalPrice);
+			latch.countDown(); // 执行完毕，计数器减1
+		}
+
+		try {
+			Thread.sleep(30000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void contextLoads3() {
+
+		for(int price=0;price<count;price++) {
+			new Thread(new MyTestThread()).start();
+			System.out.println("In Java8, Lambda expression rocks !!"+price);
+			latch.countDown(); // 执行完毕，计数器减1
+		}
+
+		try {
+			Thread.currentThread().sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public int add(int price) {
 		Order order = new Order();
 		order.setUserId(1000L);
@@ -87,6 +133,20 @@ public class RocketmqApplicationTests {
 		order.setProductId(200L);
 		int i = orderService.inset(order);
 		return i;
+	}
+
+	public class MyTestThread implements Runnable{
+
+		@Override
+		public void run() {
+			try {
+				latch.await(); // 线程等待
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			//add(123);
+			restTemplate.getForEntity("http://localhost:8080/order/add", String.class).getBody();
+		}
 	}
 
 }
