@@ -3,10 +3,11 @@ server:
 
 spring:
   datasource:
-    name: test
-    url: jdbc:mysql://127.0.0.1:3306/order
-    username: root
-    password: root
+    druid:
+      name: test
+      url: jdbc:mysql://127.0.0.1:3306/order
+      username: root
+      password: root
 
     #���ӳ�ʹ�õ����ݿ�������
 #    type: org.apache.commons.dbcp.BasicDataSource
@@ -23,23 +24,15 @@ spring:
 #    max-wait: 60000
 
     # ʹ��druid����Դ
-    type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.jdbc.Driver
-    filters: stat
-    maxActive: 1
-    initialSize: 1
-    maxWait: 1000
-    maxIdle: 1
-    minIdle: 1
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 30000
-    validationQuery: select 'x'
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    poolPreparedStatements: true
-    maxOpenPreparedStatements: 2
-    maxPoolPreparedStatementPerConnectionSize: 1
+      driver-class-name: com.mysql.jdbc.Driver
+      filters: stat
+      max-active: 2
+      initial-size: 1
+      max-wait: 100
+      min-idle: 1
+      query-timeout: 100
+      validation-query: true
+
 
 mybatis:
   mapper-locations: classpath:mapping/*.xml

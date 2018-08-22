@@ -20,7 +20,7 @@ public class RocketmqApplicationTests {
 	@Autowired
 	public OrderService orderService;
 
-	private final int count = 200;
+	private final int count = 500;
 
 	private RestTemplate restTemplate = new RestTemplate();
 	/*
@@ -119,7 +119,7 @@ public class RocketmqApplicationTests {
 		}
 
 		try {
-			Thread.currentThread().sleep(3000);
+			Thread.currentThread().sleep(13000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

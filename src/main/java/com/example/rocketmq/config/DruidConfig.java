@@ -13,7 +13,8 @@ import org.springframework.context.annotation.Primary;
 import com.alibaba.druid.pool.DruidDataSource;
 
 
-@Configuration
+@Deprecated
+//@Configuration
 public class DruidConfig {
     private Logger logger = Logger.getLogger(this.getClass());
 
