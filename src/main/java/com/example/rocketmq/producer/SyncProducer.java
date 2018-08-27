@@ -13,8 +13,8 @@ public class SyncProducer {
     public static void main(String[] args) throws Exception {
         //Instantiate with a producer group name.
         DefaultMQProducer producer = new
-                DefaultMQProducer("zhaolei_group");
-        producer.setNamesrvAddr("127.0.0.1:9876");
+                DefaultMQProducer("zhaolei_group2");
+        producer.setNamesrvAddr("192.168.1.5:9876");
         //Launch the instance.
         producer.start();
         for (int i = 0; i < 100; i++) {

@@ -7,6 +7,7 @@ import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
 import org.springframework.util.StringUtils;
@@ -28,8 +29,8 @@ public class PushConsumer {
          * 注意：ConsumerGroupName需要由应用来保证唯一
          */
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(
-                "zhaolei_group");
-        consumer.setNamesrvAddr("localhost:9876");
+                "zhaolei_group2");
+        consumer.setNamesrvAddr("182.168.1.5:9876");
         consumer.setInstanceName("Consumber");
         consumer.setMessageModel(MessageModel.CLUSTERING);
         //                   consumer.setConsumeThreadMin(1);
@@ -39,6 +40,8 @@ public class PushConsumer {
          * 订阅指定topic下tags分别等于TagA或TagC或TagD
          */
         consumer.subscribe("TopicTest","TagA || TagC || TagD");
+        //从什么位置开始读取信息
+        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
         /**
          * 订阅指定topic下所有消息<br>
          * 注意：一个consumer对象可以订阅多个tag
