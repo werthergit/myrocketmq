@@ -66,17 +66,21 @@ public class ConsumerOrder implements CommandLineRunner {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }*/
+               try {
+                   int orderid = Integer.parseInt(new String(msg.getBody()));
 
-                    int orderid = Integer.parseInt(new String(msg.getBody()));
+                   Order order = new Order();
+                   order.setUserId((long) orderid);
+                   order.setPrice(10000);
+                   order.setStatus((byte) 0);
+                   order.setProductId(200L);
+                   orderService.inset(order);
+               }catch (Exception ex){
+                   ex.printStackTrace();
+               }finally {
+                   System.out.println(OffsetDateTime.now()+"接收到了消息----order："+new String(msg.getBody()));
+               }
 
-                    Order order = new Order();
-                    order.setUserId((long) orderid);
-                    order.setPrice(10000);
-                    order.setStatus((byte) 0);
-                    order.setProductId(200L);
-                    orderService.inset(order);
-
-                    System.out.println(OffsetDateTime.now()+"接收到了消息----order："+new String(msg.getBody()));
 
                 }
                 return ConsumeOrderlyStatus.SUCCESS;
