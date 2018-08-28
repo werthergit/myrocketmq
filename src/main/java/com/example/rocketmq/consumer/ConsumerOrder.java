@@ -1,10 +1,13 @@
 package com.example.rocketmq.consumer;
 
+import com.example.rocketmq.order.model.Order;
+import com.example.rocketmq.order.service.OrderService;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeOrderlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerOrderly;
 import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.apache.rocketmq.common.message.Message;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -32,6 +35,8 @@ public class ConsumerOrder implements CommandLineRunner {
     @Value("${apache.rocketmq.namesrvAddr}")
     private String namesrvAddr;
 
+    @Autowired
+    public OrderService orderService;
 
     /**
      * 初始化RocketMq的监听信息，渠道信息
@@ -56,11 +61,21 @@ public class ConsumerOrder implements CommandLineRunner {
 
                 // 会把不同的消息分别放置到不同的队列中
                 for(Message msg:msgs){
-                    try {
+                    /*try {
                         Thread.sleep(3000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    }
+                    }*/
+
+                    int orderid = Integer.parseInt(new String(msg.getBody()));
+
+                    Order order = new Order();
+                    order.setUserId((long) orderid);
+                    order.setPrice(10000);
+                    order.setStatus((byte) 0);
+                    order.setProductId(200L);
+                    orderService.inset(order);
+
                     System.out.println(OffsetDateTime.now()+"接收到了消息----order："+new String(msg.getBody()));
 
                 }

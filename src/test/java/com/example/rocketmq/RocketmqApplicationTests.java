@@ -135,7 +135,7 @@ public class RocketmqApplicationTests {
 		return i;
 	}
 
-	public class MyTestThread implements Runnable{
+	public   class MyTestThread implements Runnable{
 
 		@Override
 		public void run() {

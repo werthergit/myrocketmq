@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -20,6 +21,8 @@ public class RocketmqApplicationTests2 {
 	public OrderService orderService;
 
 	private final int count = 200;
+
+	private 	static AtomicInteger atomic = new AtomicInteger(0);
 
 	private RestTemplate restTemplate = new RestTemplate();
 	/*
@@ -32,27 +35,16 @@ public class RocketmqApplicationTests2 {
 
 
 	@Test
-	public void contextLoads2() {
+	public void contextLoads3() {
 
 		for(int price=0;price<count;price++) {
-			int finalPrice = price;
-			new Thread(() -> {
-				try {
-					latch.await(); // 主线程等待
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-
-				add(finalPrice);
-				//Assert.assertEquals(add(finalPrice), 1);
-				//System.out.println("----------over----");
-			}).start();
-			System.out.println("In Java8, Lambda expression rocks !!"+finalPrice);
+			new Thread(new RocketmqApplicationTests2.MyTestThread2()).start();
+			System.out.println("In Java8, Lambda expression rocks !!"+price);
 			latch.countDown(); // 执行完毕，计数器减1
 		}
 
 		try {
-			Thread.sleep(10000);
+			Thread.currentThread().sleep(3000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -60,14 +52,19 @@ public class RocketmqApplicationTests2 {
 
 
 
-	public int add(int price) {
-		Order order = new Order();
-		order.setUserId(1000L);
-		order.setPrice(price);
-		order.setStatus((byte) 0);
-		order.setProductId(200L);
-		int i = orderService.inset(order);
-		return i;
+	public class MyTestThread2 implements Runnable{
+
+		@Override
+		public void run() {
+			try {
+				latch.await(); // 线程等待
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			//add(123);
+			int count = atomic.incrementAndGet();
+			restTemplate.getForEntity("http://localhost:8082/push?msg="+count, String.class).getBody();
+		}
 	}
 
 
