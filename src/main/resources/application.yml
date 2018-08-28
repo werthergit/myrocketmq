@@ -1,11 +1,11 @@
 server:
-  port: 8080
+  port: 8082
 
 spring:
   datasource:
     druid:
       name: test
-      url: jdbc:mysql://127.0.0.1:3306/order
+      url: jdbc:mysql://192.168.109.208:3306/order
       username: root
       password: root
 
@@ -37,3 +37,11 @@ spring:
 mybatis:
   mapper-locations: classpath:mapping/*.xml
   type-aliases-package: com.example.rocketmq.order.model
+
+apache:
+  rocketmq:
+    consumer:
+      pushConsumer: XiaourPushConsumer
+    producer:
+      producerGroup: Xiaour
+    namesrvAddr: 192.168.109.214:9876

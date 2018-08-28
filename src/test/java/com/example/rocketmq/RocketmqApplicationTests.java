@@ -145,7 +145,7 @@ public class RocketmqApplicationTests {
 				e.printStackTrace();
 			}
 			//add(123);
-			restTemplate.getForEntity("http://localhost:8080/order/add", String.class).getBody();
+			restTemplate.getForEntity("http://localhost:8082/order/add", String.class).getBody();
 		}
 	}
 
